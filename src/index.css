@@ -9,7 +9,11 @@
   --color-purple: #6c4ce0;
   --color-text-primary: #171717;
   --color-text-secondary: #6b6b6b;
+  /* Not in the AGENT.md palette — pragmatic additions for form errors and the
+     "concluído" project status, kept desaturated so they never compete with the
+     orange/purple brand pair. */
   --color-error: #dc2626;
+  --color-success: #15803d;
 
   /* Typography — AGENT.md §2.2 */
   --font-display: "Space Grotesk", sans-serif;

@@ -3,18 +3,28 @@ import { useNavigate, Link } from "react-router-dom";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import AuthLayout from "../components/layout/AuthLayout";
-import { isRequired, isValidEmail } from "../lib/validation";
+import {
+  isRequired,
+  isValidEmail,
+  isLongEnough,
+  matches,
+  MIN_PASSWORD_LENGTH,
+} from "../lib/validation";
 import { useAuth } from "../context/auth-context";
-import { DEMO_CREDENTIALS } from "../lib/auth";
 
 const linkClasses =
   "rounded font-medium text-purple underline underline-offset-2 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple focus-visible:ring-offset-2";
 
-export default function LoginPage() {
-  const [values, setValues] = useState({ email: "", password: "" });
+export default function SignupPage() {
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState("");
-  const { login } = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   function handleChange(event) {
@@ -28,6 +38,9 @@ export default function LoginPage() {
     event.preventDefault();
 
     const nextErrors = {};
+    if (!isRequired(values.name)) {
+      nextErrors.name = "Nome é obrigatório";
+    }
     if (!isRequired(values.email)) {
       nextErrors.email = "Email é obrigatório";
     } else if (!isValidEmail(values.email)) {
@@ -35,12 +48,22 @@ export default function LoginPage() {
     }
     if (!isRequired(values.password)) {
       nextErrors.password = "Senha é obrigatória";
+    } else if (!isLongEnough(values.password)) {
+      nextErrors.password = `Use pelo menos ${MIN_PASSWORD_LENGTH} caracteres`;
+    }
+    if (!matches(values.password, values.confirmPassword)) {
+      nextErrors.confirmPassword = "As senhas não coincidem";
     }
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
-    const result = login(values.email, values.password);
+    const result = signup({
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    });
+
     if (result.success) {
       navigate("/dashboard");
     } else {
@@ -50,25 +73,28 @@ export default function LoginPage() {
 
   return (
     <AuthLayout
-      title="Entrar"
-      subtitle="Acesse sua conta Nexora Stack."
+      title="Criar conta"
+      subtitle="Comece a organizar seus projetos em camadas."
+      tagline="Uma conta, todos os seus projetos em camadas."
       footer={
-        <>
-          <p>
-            Não tem uma conta?{" "}
-            <Link to="/signup" className={linkClasses}>
-              Criar conta
-            </Link>
-          </p>
-          <p className="mt-2">
-            <Link to="/forgot-password" className={linkClasses}>
-              Esqueci minha senha
-            </Link>
-          </p>
-        </>
+        <p>
+          Já tem uma conta?{" "}
+          <Link to="/login" className={linkClasses}>
+            Entrar
+          </Link>
+        </p>
       }
     >
       <form onSubmit={handleSubmit} noValidate className="space-y-5">
+        <Input
+          label="Nome"
+          name="name"
+          value={values.name}
+          onChange={handleChange}
+          error={errors.name}
+          required
+          placeholder="Como podemos te chamar"
+        />
         <Input
           label="Email"
           type="email"
@@ -87,6 +113,16 @@ export default function LoginPage() {
           onChange={handleChange}
           error={errors.password}
           required
+          placeholder={`Mínimo de ${MIN_PASSWORD_LENGTH} caracteres`}
+        />
+        <Input
+          label="Confirmar senha"
+          type="password"
+          name="confirmPassword"
+          value={values.confirmPassword}
+          onChange={handleChange}
+          error={errors.confirmPassword}
+          required
           placeholder="••••••••"
         />
 
@@ -97,13 +133,9 @@ export default function LoginPage() {
         )}
 
         <Button type="submit" variant="primary" className="w-full">
-          Entrar
+          Criar conta
         </Button>
       </form>
-
-      <p className="mt-6 font-mono text-xs text-text-secondary">
-        Demo: {DEMO_CREDENTIALS.email} / {DEMO_CREDENTIALS.password}
-      </p>
     </AuthLayout>
   );
 }
