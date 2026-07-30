@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors — AGENT.md §2.1 */
+  --color-bg-base: #ffffff;
+  --color-bg-alt: #fafafa;
+  --color-orange: #ff6b1a;
+  --color-orange-hover: #e85d0a;
+  --color-purple: #6c4ce0;
+  --color-text-primary: #171717;
+  --color-text-secondary: #6b6b6b;
+  --color-error: #dc2626;
+
+  /* Typography — AGENT.md §2.2 */
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
