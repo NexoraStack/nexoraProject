@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 
@@ -16,7 +17,7 @@ function PublicOnlyRoute({ children }) {
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<LandingPage />} />
       <Route
         path="/login"
         element={
@@ -33,7 +34,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
@@ -41,7 +42,11 @@ function AppRoutes() {
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      {/* useTransitions defaults to on, deferring route-match updates via
+          startTransition. That let ProtectedRoute observe a stale route with a
+          fresh (cleared) session mid-logout and redirect to /login before our
+          own navigate("/") landed. Disabling it keeps route updates synchronous. */}
+      <BrowserRouter useTransitions={false}>
         <AppRoutes />
       </BrowserRouter>
     </AuthProvider>

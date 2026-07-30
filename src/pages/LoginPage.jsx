@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Logo from "../components/ui/Logo";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
@@ -53,7 +53,9 @@ export default function LoginPage() {
         <div className="flex h-full w-full flex-col justify-center bg-orange px-8 py-10 md:px-14">
           <StackedLinesPattern />
           <div className="relative z-10">
-            <Logo variant="light" size="md" />
+            <Link to="/" className="inline-block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2">
+              <Logo variant="light" size="md" />
+            </Link>
             <p className="mt-4 max-w-xs font-display text-lg text-text-primary">
               Organize seus projetos em camadas, do jeito Nexora.
             </p>
@@ -62,7 +64,12 @@ export default function LoginPage() {
       }
       right={
         <div className="ml-8 w-full max-w-sm px-6 py-10 md:ml-16 md:px-0">
-          <Logo variant="dark" size="sm" className="mb-8 md:hidden" />
+          <Link
+            to="/"
+            className="mb-8 inline-block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-hover focus-visible:ring-offset-2 md:hidden"
+          >
+            <Logo variant="dark" size="sm" />
+          </Link>
           <h1 className="font-display text-2xl font-semibold text-text-primary">
             Entrar
           </h1>

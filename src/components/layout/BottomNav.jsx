@@ -13,7 +13,7 @@ export default function BottomNav() {
 
   function handleLogout() {
     logout();
-    navigate("/login");
+    navigate("/");
   }
 
   return (

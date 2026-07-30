@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import Logo from "../ui/Logo";
 import { useAuth } from "../../context/AuthContext";
 
@@ -14,12 +14,17 @@ export default function Sidebar() {
 
   function handleLogout() {
     logout();
-    navigate("/login");
+    navigate("/");
   }
 
   return (
     <aside className="hidden w-56 flex-col border-r border-black/5 bg-bg-alt px-4 py-6 md:flex">
-      <Logo size="sm" className="px-2" />
+      <Link
+        to="/"
+        className="rounded-lg px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-hover focus-visible:ring-offset-2"
+      >
+        <Logo size="sm" />
+      </Link>
 
       <nav className="mt-10 flex flex-1 flex-col gap-1">
         {navItems.map((item) =>
